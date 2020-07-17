@@ -57,21 +57,31 @@ window.addEventListener('DOMContentLoaded', () => {
 	const toglePopup = () => {
 		const popup = document.querySelector('.popup'),
 					popupBtn = document.querySelectorAll('.popup-btn'),
-					popupClose = popup.querySelector('.popup-close');
+					popupClose = popup.querySelector('.popup-close'),
+					popupContent = popup.querySelector('.popup-content');
 		let alfa = 0;
+		let rotate = 45;
 
 		const popupAnimation = () => {
+			popup.style.display = 'inline-block';
 			const animation = () => {
-				popup.style.display = 'inline-block';
 				popup.style.opacity = alfa;
 				alfa = (alfa * 10 + 1) / 10;
-				console.log(alfa);
 				if(alfa === 1) {
 					clearInterval(interval);
 					alfa = 0;
 				}
 			};
+			const translated = () => {
+				rotate--;
+				popupContent.style.transform = `rotate(${rotate}deg)`;
+				if (rotate === 0) {
+					rotate = 45;
+					clearInterval(intervalTranslate);
+				}
+			};
 			const interval = setInterval(animation, 50);
+			const intervalTranslate = setInterval(translated, 30);
 		};
 
 		popupBtn.forEach((item) => {
