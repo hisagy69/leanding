@@ -45,7 +45,6 @@ window.addEventListener('DOMContentLoaded', () => {
 		const handlerMenu = (event) => {
 			const target = event.target;
 			if (target.closest('.menu') || target === closeBtn || target.closest('menu ul > li') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
-				console.dir(target);
 				menu.classList.toggle('active-menu');
 			}
 		};
@@ -56,23 +55,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//scroll
 	const scrollWindow = () => {
-		const link = document.querySelector('a[href="#service-block"]'),
-		serviceBlock = document.getElementById('service-block');
+		// const link = document.querySelector('a[href="#service-block"]'),
+		// 			menu = document.querySelector('menu');
 		let interval;
-		const slowScroll = () => {
+		const slowScroll = (event) => {
+			const target = event.target.closest('a');
+			const block = document.querySelector(target.attributes.href.textContent);
 			const animation = () => {
-				console.log(document.documentElement.scrollTop);
 				document.documentElement.scrollTop += 10;
-				if (document.documentElement.scrollTop >= serviceBlock.offsetTop) {
+				if (document.documentElement.scrollTop >= block.offsetTop) {
 					clearInterval(interval);
-					interval = null;
 				}
-			}
+			};
 			interval = setInterval(animation, 10);
 		};
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			slowScroll();
+		document.addEventListener('click', (event) => {
+			if(event.target.closest('a')) {
+				event.preventDefault();
+				slowScroll(event);
+			}
 		});
 	};
 
