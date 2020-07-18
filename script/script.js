@@ -54,6 +54,28 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 
+	//scroll
+	const scrollWindow = () => {
+		const link = document.querySelector('a[href="#service-block"]'),
+		serviceBlock = document.getElementById('service-block');
+		let interval;
+		const slowScroll = () => {
+			const animation = () => {
+				console.log(document.documentElement.scrollTop);
+				document.documentElement.scrollTop += 10;
+				if (document.documentElement.scrollTop >= serviceBlock.offsetTop) {
+					clearInterval(interval);
+					interval = null;
+				}
+			}
+			interval = setInterval(animation, 10);
+		};
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			slowScroll();
+		});
+	};
+
 	//popup
 	const toglePopup = () => {
 		const popup = document.querySelector('.popup'),
@@ -132,7 +154,9 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 		});
 	};
+
 	toggleMenu();
+	scrollWindow();
 	toglePopup();
 	tabs();
 });
