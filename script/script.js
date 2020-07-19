@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		const handlerMenu = (event) => {
 			const target = event.target;
-			if (target.closest('.menu') || target === closeBtn || target.closest('menu ul > li') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
+			if (target.closest('.menu') || target === closeBtn || target.closest('menu li > a') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
 				menu.classList.toggle('active-menu');
 			}
 		};
