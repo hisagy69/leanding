@@ -18,12 +18,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		
 		const updateClock = () => {
 			const timer = getTimeRemaining();
-			for(let key in timer) {
-				if(String(timer[key]).length === 1) {
+			for (let key in timer) {
+				if (String(timer[key]).length === 1) {
 					timer[key] = '0' + timer[key];
 				}
 			}
-			if(timer.timeRemaining <= 0) {
+			if (timer.timeRemaining <= 0) {
 				timer.hours = '00';
 				timer.minutes = '00';
 				timer.seconds = '00';
@@ -44,8 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		const handlerMenu = (event) => {
 			const target = event.target;
-			if (target.closest('.menu') || target === closeBtn || target.closest('menu ul > li') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
-				console.dir(target);
+			if (target.closest('.menu') || target === closeBtn || target.closest('menu li > a') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
 				menu.classList.toggle('active-menu');
 			}
 		};
@@ -56,23 +55,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//scroll
 	const scrollWindow = () => {
-		const link = document.querySelector('a[href="#service-block"]'),
-		serviceBlock = document.getElementById('service-block');
 		let interval;
-		const slowScroll = () => {
+		const slowScroll = (event) => {
+			const target = event.target.closest('a');
+			const block = document.querySelector(target.attributes.href.textContent);
 			const animation = () => {
-				console.log(document.documentElement.scrollTop);
 				document.documentElement.scrollTop += 10;
-				if (document.documentElement.scrollTop >= serviceBlock.offsetTop) {
+				if (document.documentElement.scrollTop >= block.offsetTop) {
 					clearInterval(interval);
-					interval = null;
 				}
-			}
+			};
 			interval = setInterval(animation, 10);
 		};
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			slowScroll();
+		document.addEventListener('click', (event) => {
+			if(event.target.closest('a')) {
+				event.preventDefault();
+				slowScroll(event);
+			}
 		});
 	};
 
@@ -82,28 +81,22 @@ window.addEventListener('DOMContentLoaded', () => {
 					popupBtn = document.querySelectorAll('.popup-btn'),
 					popupContent = popup.querySelector('.popup-content');
 		let alfa = 0;
-		let rotate = 45;
+		let rotate = 50;
 
 		const popupAnimation = () => {
 			popup.style.display = 'inline-block';
 			const animation = () => {
-				popup.style.opacity = alfa;
 				alfa = (alfa * 10 + 1) / 10;
+				rotate -= 5;
+				popupContent.style.transform = `rotate(${rotate}deg) translateX(-50px)`;
+				popup.style.opacity = alfa;
 				if(alfa === 1) {
 					clearInterval(interval);
 					alfa = 0;
+					rotate = 50;
 				}
 			};
-			const translated = () => {
-				rotate--;
-				popupContent.style.transform = `rotate(${rotate}deg)`;
-				if (rotate === 0) {
-					rotate = 45;
-					clearInterval(intervalTranslate);
-				}
-			};
-			const interval = setInterval(animation, 50);
-			const intervalTranslate = setInterval(translated, 20);
+			const interval = setInterval(animation, 40);
 		};
 
 		popupBtn.forEach((item) => {
