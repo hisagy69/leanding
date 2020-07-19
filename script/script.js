@@ -18,12 +18,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		
 		const updateClock = () => {
 			const timer = getTimeRemaining();
-			for(let key in timer) {
-				if(String(timer[key]).length === 1) {
+			for (let key in timer) {
+				if (String(timer[key]).length === 1) {
 					timer[key] = '0' + timer[key];
 				}
 			}
-			if(timer.timeRemaining <= 0) {
+			if (timer.timeRemaining <= 0) {
 				timer.hours = '00';
 				timer.minutes = '00';
 				timer.seconds = '00';
@@ -55,8 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//scroll
 	const scrollWindow = () => {
-		// const link = document.querySelector('a[href="#service-block"]'),
-		// 			menu = document.querySelector('menu');
 		let interval;
 		const slowScroll = (event) => {
 			const target = event.target.closest('a');
@@ -83,28 +81,22 @@ window.addEventListener('DOMContentLoaded', () => {
 					popupBtn = document.querySelectorAll('.popup-btn'),
 					popupContent = popup.querySelector('.popup-content');
 		let alfa = 0;
-		let rotate = 45;
+		let rotate = 50;
 
 		const popupAnimation = () => {
 			popup.style.display = 'inline-block';
 			const animation = () => {
-				popup.style.opacity = alfa;
 				alfa = (alfa * 10 + 1) / 10;
+				rotate -= 5;
+				popupContent.style.transform = `rotate(${rotate}deg) translateX(-50px)`;
+				popup.style.opacity = alfa;
 				if(alfa === 1) {
 					clearInterval(interval);
 					alfa = 0;
+					rotate = 50;
 				}
 			};
-			const translated = () => {
-				rotate--;
-				popupContent.style.transform = `rotate(${rotate}deg)`;
-				if (rotate === 0) {
-					rotate = 45;
-					clearInterval(intervalTranslate);
-				}
-			};
-			const interval = setInterval(animation, 50);
-			const intervalTranslate = setInterval(translated, 20);
+			const interval = setInterval(animation, 40);
 		};
 
 		popupBtn.forEach((item) => {
