@@ -57,10 +57,10 @@ window.addEventListener('DOMContentLoaded', () => {
 	const scrollWindow = () => {
 		let interval;
 		const slowScroll = (event) => {
-			if(!event.target.matches('main a, menu a')) {
+			if(!event.target.closest('main a') && !event.target.closest('menu li a')) {
 				return;
 			}
-			const target = event.target.closest('main a') || event.target.closest('menu a');
+			const target = event.target.closest('main a') || event.target.closest('menu li a');
 			const block = document.querySelector(target.attributes.href.textContent);
 			const animation = () => {
 				document.documentElement.scrollTop += 10;
