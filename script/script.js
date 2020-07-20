@@ -155,7 +155,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	//слайдер
 	const slider = () => {
 		const slide = document.querySelectorAll('.portfolio-item'),
-					btn = document.querySelectorAll('.portfolio-btn'),
 					portfolioDots = document.querySelector('.portfolio-dots'),
 					slider = document.querySelector('.portfolio-content');
 		
@@ -165,8 +164,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		const dotRender = () => {
 			slide.forEach(() => {
 				portfolioDots.insertAdjacentHTML('beforeend', '<li class="dot"></li>');
-				// <li class="dot dot-active"></li>
 			});
+			document.querySelector('.dot').classList.add('dot-active');
 		};
 		dotRender();
 		const dot = document.querySelectorAll('.dot');
@@ -243,7 +242,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 		startSlide(1500);
 	};
-	
+
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
