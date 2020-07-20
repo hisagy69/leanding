@@ -243,6 +243,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 		startSlide(1500);
 	};
+	
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
