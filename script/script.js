@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					clearInterval(interval);
 				}
 			};
-			interval = setInterval(animation, 10);
+			interval = setInterval(animation, 5);
 		};
 		document.addEventListener('click', (event) => {
 			if(event.target.closest('a')) {
