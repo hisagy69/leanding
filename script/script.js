@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 	//Timer
-	const countTimer = (deadline) => {
+	const countTimer = deadline => {
 		const timerHours = document.getElementById('timer-hours'),
 					timerMinutes = document.getElementById('timer-minutes'),
 					timerSeconds = document.getElementById('timer-seconds');
@@ -42,13 +42,13 @@ window.addEventListener('DOMContentLoaded', () => {
 		const menu = document.querySelector('menu'),
 					closeBtn = menu.querySelector('.close-btn');
 
-		const handlerMenu = (event) => {
+		const handlerMenu = event => {
 			const target = event.target;
 			if (target.closest('.menu') || target === closeBtn || target.closest('menu li > a') || (menu.classList.contains('active-menu') && !target.closest('menu'))) {
 				menu.classList.toggle('active-menu');
 			}
 		};
-		document.body.addEventListener('click', (event) => {
+		document.body.addEventListener('click', event => {
 			handlerMenu(event);
 		});
 	};
@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	//scroll
 	const scrollWindow = () => {
 		let interval;
-		const slowScroll = (event) => {
+		const slowScroll = event => {
 			if(!event.target.closest('main a') && !event.target.closest('menu li a')) {
 				return;
 			}
@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			};
 			interval = setInterval(animation, 5);
 		};
-		document.addEventListener('click', (event) => {
+		document.addEventListener('click', event => {
 			if(event.target.closest('a')) {
 				event.preventDefault();
 				slowScroll(event);
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			const interval = setInterval(animation, 40);
 		};
 
-		popupBtn.forEach((item) => {
+		popupBtn.forEach(item => {
 			item.addEventListener('click', () => {
 				if (screen.width > 768) {
 					popupAnimation();
@@ -113,7 +113,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
-		popup.addEventListener('click', (event) => {
+		popup.addEventListener('click', event => {
 			const target = event.target;
 			if(!target.closest('.popup-content') || target.closest('.popup-close')) {
 				popup.style.opacity = '';
@@ -128,7 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					tab = document.querySelectorAll('.service-header-tab'),
 					tabContent = document.querySelectorAll('.service-tab');
 
-		const toggleTabContent = (index) => {
+		const toggleTabContent = index => {
 			for (let i = 0; i < tabContent.length; i++) {
 				if (index === i) {
 					tab[i].classList.add('active');
@@ -140,7 +140,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 		};
 
-		tabHeader.addEventListener('click', (event) => {
+		tabHeader.addEventListener('click', event => {
 			const target = event.target.closest('.service-header-tab');
 				if (target) {
 					tab.forEach((item, i) => {
@@ -196,7 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const stopSlide = () => {
 			clearInterval(interval);
 		};
-		slider.addEventListener('click', (event) => {
+		slider.addEventListener('click', event => {
 			event.preventDefault();
 			const target = event.target;
 
@@ -228,13 +228,13 @@ window.addEventListener('DOMContentLoaded', () => {
 			nextSlide(slide, currentSlide, 'portfolio-item-active');
 			nextSlide(dot, currentSlide, 'dot-active');
 		});
-		slider.addEventListener('mouseover', (event) => {
+		slider.addEventListener('mouseover', event => {
 			if (!event.target.matches('#arrow-right, #arrow-left, .dot')) {
 				return;
 			}
 			stopSlide();
 		});
-		slider.addEventListener('mouseout', (event) => {
+		slider.addEventListener('mouseout', event => {
 			if (!event.target.matches('#arrow-right, #arrow-left, .dot')) {
 				return;
 			}
@@ -243,9 +243,43 @@ window.addEventListener('DOMContentLoaded', () => {
 		startSlide(1500);
 	};
 
+	//command
+	const commandShow = () => {
+		const command = document.getElementById('command');
+		let src;
+	
+		command.addEventListener('mouseover', event => {
+			const target = event.target;
+			src = target.src;
+			if (target.matches('.command__photo')) {
+				target.src = target.dataset.img;
+			}
+		});
+		command.addEventListener('mouseout', event => {
+			if (event.target.matches('.command__photo')) {
+				event.target.src = src;
+			}
+		});
+	};
+
+	//калькулятор
+	const  calculate = () => {
+		const calcItem = document.querySelectorAll('.calc-item'),
+					calcBlock = document.querySelector('.calc-block');
+		
+		calcBlock.addEventListener('input', event => {
+			const target = event.target;
+			if (target.matches('.calc-item')) {
+				target.value = target.value.replace(/\D/, '');
+			}
+		});
+	};
+
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
 	tabs();
 	slider();
+	commandShow();
+	calculate();
 });
