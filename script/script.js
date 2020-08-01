@@ -271,25 +271,38 @@ window.addEventListener('DOMContentLoaded', () => {
 					calcCount = document.querySelector('.calc-count'),
 					calcBlock = document.querySelector('.calc-block');
 
-			const countSum = () => {
-				let total = 0,
-						countValue = 1,
-						dayValue = 1;
-				const typeValue = calcType.options[calcType.selectedIndex].value,
-							squareValue = +calcSquare.value;
-				if (calcCount.value > 1) {
-					countValue += (calcCount.value - 1) / 10;
+		const calcAnimate = number => {
+			let keyInterval;
+			const animate = () => {
+				if (+totalValue.textContent === number) {
+					cancelAnimationFrame(keyInterval);
+					return;
 				}
-				if (calcDay.value && calcDay.value < 5) {
-					dayValue *= 2;
-				}	else if (calcDay.value && calcDay.value < 10) {
-					dayValue *= 1.5;
-				}
-				if (typeValue && squareValue) {
-					total = price * typeValue * squareValue * countValue * dayValue;
-				}
-				totalValue.textContent = total;
+				totalValue.textContent = +totalValue.textContent + 10;
+				keyInterval = requestAnimationFrame(animate);
 			};
+			keyInterval = requestAnimationFrame(animate);
+		};
+
+		const countSum = () => {
+			let total = 0,
+					countValue = 1,
+					dayValue = 1;
+			const typeValue = calcType.options[calcType.selectedIndex].value,
+						squareValue = +calcSquare.value;
+			if (calcCount.value > 1) {
+				countValue += (calcCount.value - 1) / 10;
+			}
+			if (calcDay.value && calcDay.value < 5) {
+				dayValue *= 2;
+			}	else if (calcDay.value && calcDay.value < 10) {
+				dayValue *= 1.5;
+			}
+			if (typeValue && squareValue) {
+				total = price * typeValue * squareValue * countValue * dayValue;
+			}
+			calcAnimate(total);
+		};
 
 			calcBlock.addEventListener('change', event => {
 				const target = event.target;
