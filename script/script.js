@@ -274,11 +274,15 @@ window.addEventListener('DOMContentLoaded', () => {
 		const calcAnimate = number => {
 			let keyInterval;
 			const animate = () => {
-				if (+totalValue.textContent === number) {
+				let count;
+				(number > 3000) ? count = 100 : count = 30;
+				if (+totalValue.textContent + count >= number) {
+					totalValue.textContent = number;
+					console.log('i work');
 					cancelAnimationFrame(keyInterval);
 					return;
 				}
-				totalValue.textContent = +totalValue.textContent + 10;
+				totalValue.textContent = +totalValue.textContent + count;
 				keyInterval = requestAnimationFrame(animate);
 			};
 			keyInterval = requestAnimationFrame(animate);
@@ -301,6 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (typeValue && squareValue) {
 				total = price * typeValue * squareValue * countValue * dayValue;
 			}
+			totalValue.textContent = 0;
 			calcAnimate(total);
 		};
 
