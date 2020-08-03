@@ -324,6 +324,51 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 
+	//valid
+	const valid = new Validator({
+		selector: '#form1',
+		pattern: {
+			phone: /^\d+$/
+		},
+		method: {
+			'name': [
+				['notEmpty'],
+				['pattern', 'name']
+			],
+			'phone': [
+				['notEmpty'],
+				['pattern', 'phone']
+			],
+			'email': [
+				['notEmpty'],
+				['pattern', 'email']
+			]
+		}
+	});
+	const valid1 = new Validator({
+		selector: '#form2',
+		method: {
+			'phone': [
+				['notEmpty'],
+				['pattern', 'phone']
+			],
+			'email': [
+				['notEmpty'],
+				['pattern', 'email']
+			],
+			'name': [
+				['notEmpty'],
+				['pattern', 'name']
+			],
+			'message': [
+				['notEmpty'],
+				['pattern', 'message']
+			]
+		}
+	});
+	valid.init();
+	valid1.init();
+
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
