@@ -278,7 +278,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				(number > 3000) ? count = 100 : count = 30;
 				if (+totalValue.textContent + count >= number) {
 					totalValue.textContent = number;
-					console.log('i work');
 					cancelAnimationFrame(keyInterval);
 					return;
 				}
@@ -294,6 +293,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					dayValue = 1;
 			const typeValue = calcType.options[calcType.selectedIndex].value,
 						squareValue = +calcSquare.value;
+			totalValue.textContent = 0;
 			if (calcCount.value > 1) {
 				countValue += (calcCount.value - 1) / 10;
 			}
@@ -305,8 +305,9 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (typeValue && squareValue) {
 				total = price * typeValue * squareValue * countValue * dayValue;
 			}
-			totalValue.textContent = 0;
-			calcAnimate(total);
+			if (calcType.value && calcSquare.value) {
+				calcAnimate(total);
+			}
 		};
 
 			calcBlock.addEventListener('change', event => {
