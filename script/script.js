@@ -368,7 +368,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 	valid.init();
 	valid1.init();
-
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
