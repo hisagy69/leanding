@@ -286,7 +286,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					clearAnimate();
 				}
 				totalValue.textContent = +totalValue.textContent + count;
-				calcBlock.addEventListener('change', clearAnimate);
+				calcBlock.addEventListener('blur', clearAnimate);
 				keyInterval = requestAnimationFrame(animate);
 			};
 			keyInterval = requestAnimationFrame(animate);
