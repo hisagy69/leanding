@@ -276,12 +276,17 @@ window.addEventListener('DOMContentLoaded', () => {
 			const animate = () => {
 				let count;
 				(number > 3000) ? count = 100 : count = 30;
-				if (+totalValue.textContent + count >= number) {
-					totalValue.textContent = number;
+				const clearAnimate = () => {
 					cancelAnimationFrame(keyInterval);
 					return;
+				};
+				if (+totalValue.textContent + count >= number) {
+					totalValue.textContent = Math.round(number);
+					calcBlock.removeEventListener('change', clearAnimate);
+					clearAnimate();
 				}
 				totalValue.textContent = +totalValue.textContent + count;
+				calcBlock.addEventListener('change', clearAnimate);
 				keyInterval = requestAnimationFrame(animate);
 			};
 			keyInterval = requestAnimationFrame(animate);
