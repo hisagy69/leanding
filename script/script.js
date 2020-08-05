@@ -330,6 +330,46 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	};
 
+	//send-ajax-form
+	const sendForm = (idForm) => {
+		const errorMessage = 'Что то пошло не так...',
+					loadMessage = 'Загрузка...',
+					successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+		const form = document.getElementById(idForm);
+		const statusMessage = document.createElement('div');
+		statusMessage.style.cssText = 'font-size: 2rem;';
+		form.addEventListener('submit', event => {
+			event.preventDefault();
+			form.append(statusMessage);
+			const request = new XMLHttpRequest();
+			request.addEventListener('readystatechange', () => {
+				statusMessage.textContent = loadMessage;
+				if (request.readyState !== 4) {
+					return;
+				}
+				if (request.status === 200) {
+					statusMessage.textContent = successMessage;
+					[...form.elements].forEach(item => {
+						if(item.tagName.toLowerCase() === 'input') {
+							item.value = '';
+						}
+					});
+				} else {
+					statusMessage.textContent = errorMessage;
+					console.error(request.status);
+				}
+			});
+			request.open('POST', './server.php');
+			request.setRequestHeader('Content-Type', 'application/json');
+			const formData = new FormData(form);
+			let body = {};
+			for (let val of formData.entries()) {
+				body[val[0]] = val[1];
+			}
+			request.send(JSON.stringify(body));
+		});
+	};
+
 	//valid
 	const valid = new Validator({
 		selector: '#form1',
@@ -374,6 +414,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 	valid.init();
 	valid1.init();
+	sendForm('form1');
+	sendForm('form2');
+	sendForm('form3');
 	toggleMenu();
 	scrollWindow();
 	toglePopup();
