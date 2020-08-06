@@ -401,11 +401,10 @@ window.addEventListener('DOMContentLoaded', () => {
 		successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 		const form = document.getElementById(idForm);
 		const statusMessage = document.createElement('div');
-		statusMessage.style.cssText = 'font-size: 2rem;';
+		statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 		form.addEventListener('submit', event => {
 			for(let item of [...form.elements]) {
 				if (item.classList.contains('error')) {
-					console.log('work');
 					return;
 				}
 			}
