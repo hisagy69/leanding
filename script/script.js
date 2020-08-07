@@ -397,10 +397,10 @@ window.addEventListener('DOMContentLoaded', () => {
 	//send-ajax-form
 	const sendForm = (idForm) => {
 		const errorMessage = 'Что то пошло не так...',
-		loadMessage = 'Загрузка...',
 		successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 		const form = document.getElementById(idForm);
 		const statusMessage = document.createElement('div');
+		let keyRequest;
 		statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 		form.addEventListener('submit', event => {
 			for(let item of [...form.elements]) {
@@ -410,7 +410,69 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 			event.preventDefault();
 			form.append(statusMessage);
-			statusMessage.textContent = loadMessage;
+			statusMessage.innerHTML = `
+				<div class="animate">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			`;
+
+			statusMessage.querySelector('.animate').style.cssText = `
+				width: 40px;
+				height: 40px;
+				display: flex;
+				flex-wrap: wrap;
+				margin: auto;
+		`;
+		console.log(statusMessage.querySelectorAll('.animate div'));
+		statusMessage.querySelectorAll('.animate div').forEach(item => {
+			item.style.cssText = `
+				width: 20px;
+				height: 20px;
+				background: #000;
+				display: inline-block;
+				opacity: 0.1;
+				margin: 0;
+			`;
+		});
+
+			const animate = () => {
+				let start = null;
+				let prevItem = null,
+					fantom = null;
+				let i = 0;
+				const loader = document.querySelector('.animate'),
+					divCollection = loader.querySelectorAll('div');
+				const animateFrame = timestamp => {
+					if (!start) start = timestamp;
+					if (timestamp - start >= 100) {
+						divCollection[i].style.opacity = 1;
+						if (prevItem) prevItem.style.opacity = 0.5;
+						if (fantom) fantom.style.opacity = 0;
+						fantom = prevItem;
+						prevItem = divCollection[i];
+						if (i === 3) {
+							i -= 1;
+						} else if (i === 1) {
+							i += 2;
+						} else if (i === 0) {
+							i++;
+						} else {
+							i = 0;
+							start = timestamp;
+							keyRequest = requestAnimationFrame(animateFrame);
+							return;
+						}
+						start = timestamp;
+					}
+					keyRequest = requestAnimationFrame(animateFrame);
+				};
+				keyRequest = requestAnimationFrame(animateFrame);
+			};
+
+			animate();
 			const formData = new FormData(form);
 			let body = {};
 			for (let val of formData.entries()) {
@@ -419,11 +481,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			postData(body, () => {
 				statusMessage.textContent = successMessage;
 				[...form.elements].forEach(item => {
-					if(item.tagName.toLowerCase() === 'input') {
+					if (item.tagName.toLowerCase() === 'input') {
 						item.value = '';
 					}
 				});
-			}, (error) => {
+			}, error => {
 				statusMessage.textContent = errorMessage;
 				console.error(error);
 			});
@@ -436,8 +498,10 @@ window.addEventListener('DOMContentLoaded', () => {
 					return;
 				}
 				if (request.status === 200) {
+					cancelAnimationFrame(keyRequest);
 					outputData();
 				} else {
+					cancelAnimationFrame(keyRequest);
 					errorData(request.status);
 				}
 			});

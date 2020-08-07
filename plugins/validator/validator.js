@@ -99,7 +99,7 @@ class Validator {
 			this.pattern.name = /^[а-я]+$/i;
 		}
 		if (!this.pattern.message) {
-			this.pattern.message = /^([а-я])+(\s\1)*/gim;
+			this.pattern.message = /^([а-я])+\s\1*/gim;
 		}
 	}
 }
