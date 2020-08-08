@@ -395,7 +395,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	valid2.init();
 
 	//send-ajax-form
-	const sendForm = (idForm) => {
+	const sendForm = idForm => {
 		const errorMessage = 'Что то пошло не так...',
 		successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 		const form = document.getElementById(idForm);
@@ -403,48 +403,51 @@ window.addEventListener('DOMContentLoaded', () => {
 		let keyRequest;
 		statusMessage.style.cssText = 'font-size: 2rem; color: #fff';
 		form.addEventListener('submit', event => {
-			for(let item of [...form.elements]) {
+			for (let item of [...form.elements]) {
 				if (item.classList.contains('error')) {
 					return;
 				}
 			}
 			event.preventDefault();
 			form.append(statusMessage);
-			statusMessage.innerHTML = `
-				<div class="animate">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-			`;
-
-			statusMessage.querySelector('.animate').style.cssText = `
-				width: 40px;
-				height: 40px;
-				display: flex;
-				flex-wrap: wrap;
-				margin: auto;
-		`;
-		console.log(statusMessage.querySelectorAll('.animate div'));
-		statusMessage.querySelectorAll('.animate div').forEach(item => {
-			item.style.cssText = `
-				width: 20px;
-				height: 20px;
-				background: #000;
-				display: inline-block;
-				opacity: 0.1;
-				margin: 0;
-			`;
-		});
 
 			const animate = () => {
-				let start = null;
-				let prevItem = null,
-					fantom = null;
-				let i = 0;
+				let start = null,
+				 		prevItem = null,
+						fantom = null,
+						i = 0;
+
+				statusMessage.innerHTML = `
+					<div class="animate">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				`;
+
 				const loader = document.querySelector('.animate'),
-					divCollection = loader.querySelectorAll('div');
+							divCollection = loader.querySelectorAll('div');
+
+				statusMessage.querySelector('.animate').style.cssText = `
+					width: 40px;
+					height: 40px;
+					display: flex;
+					flex-wrap: wrap;
+					margin: auto;
+				`;
+				divCollection[2].style.order = 1;
+				[...divCollection].forEach(item => {
+					item.style.cssText = `
+						width: 20px;
+						height: 20px;
+						background: #000;
+						display: inline-block;
+						opacity: 0.1;
+						margin: 0;
+					`;
+				});
+
 				const animateFrame = timestamp => {
 					if (!start) start = timestamp;
 					if (timestamp - start >= 100) {
@@ -454,18 +457,13 @@ window.addEventListener('DOMContentLoaded', () => {
 						fantom = prevItem;
 						prevItem = divCollection[i];
 						if (i === 3) {
-							i -= 1;
-						} else if (i === 1) {
-							i += 2;
-						} else if (i === 0) {
-							i++;
-						} else {
 							i = 0;
 							start = timestamp;
 							keyRequest = requestAnimationFrame(animateFrame);
 							return;
 						}
-						start = timestamp;
+							i++;
+							start = timestamp;
 					}
 					keyRequest = requestAnimationFrame(animateFrame);
 				};
