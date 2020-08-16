@@ -60,7 +60,16 @@ class Validator {
 			return;
 		}
 		const errorDiv = document.createElement('div');
-		errorDiv.textContent = 'Ошибка в этом поле';
+		const message = item.name === 'user_email' ?
+		'введите email вида mail@mail.ru' :
+		item.name === 'user_phone' ?
+		'введите телефон форматом 80000000000 или +70000000000' :
+		item.name === 'user_name' ?
+		'введите имя на русском языке без пробелов':
+		item.name === 'user_message' ?
+		'сообщение не должно быть пустым и должно написанно на русском' :
+		'Ошибка в этом поле';
+		errorDiv.textContent = message;
 		errorDiv.classList.add('validator-error');
 		item.insertAdjacentElement('afterend', errorDiv);
 	}
@@ -93,13 +102,13 @@ class Validator {
 			this.pattern.phone = /^\+?[78]([-?()]*\d){10}$/;
 		}
 		if (!this.pattern.email) {
-			this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+			this.pattern.email = /^\w(\w?-?_?)+@\w+\.\w{2,}$/;
 		}
 		if (!this.pattern.name) {
 			this.pattern.name = /^[а-я]+$/i;
 		}
 		if (!this.pattern.message) {
-			this.pattern.message = /([а-я]+)\s\1*/gim;
+			this.pattern.message = /([а-я]|\s|\d)+/gim;
 		}
 	}
 }
